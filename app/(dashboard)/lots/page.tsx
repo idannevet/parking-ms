@@ -12,9 +12,9 @@ import toast from 'react-hot-toast';
 type LotWithStats = ParkingLot & { occupied_spots: number; spot_count: number };
 
 const EMPTY: Partial<ParkingLot> = {
-  name:'', location:'', city:'Tel Aviv', lot_type:'city',
-  total_spots:100, hourly_rate:8, daily_rate:55, monthly_rate:650,
-  opening_time:'06:00', closing_time:'23:00', is_active:true,
+  name: '', location: '', city: 'תל אביב', lot_type: 'city',
+  total_spots: 100, hourly_rate: 8, daily_rate: 55, monthly_rate: 650,
+  opening_time: '06:00', closing_time: '23:00', is_active: true,
 };
 
 export default function LotsPage() {
@@ -51,7 +51,7 @@ export default function LotsPage() {
     try {
       const method = editing.id ? 'PUT' : 'POST';
       const url    = editing.id ? `/api/lots/${editing.id}` : '/api/lots';
-      const res    = await fetch(url, { method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(editing) });
+      const res    = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editing) });
       if (!res.ok) { const e = await res.json(); throw new Error(e.error); }
       setShowModal(false);
       load();
@@ -61,27 +61,27 @@ export default function LotsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this parking lot?')) return;
-    await fetch(`/api/lots/${id}`, { method:'DELETE' });
+    if (!confirm('למחוק את החניון?')) return;
+    await fetch(`/api/lots/${id}`, { method: 'DELETE' });
     load();
   };
 
   const handleToggle = async (lot: LotWithStats) => {
-    await fetch(`/api/lots/${lot.id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ is_active: !lot.is_active }) });
+    await fetch(`/api/lots/${lot.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: !lot.is_active }) });
     load();
   };
 
   return (
     <div className="space-y-5">
-      <Header title="Parking Lots" subtitle={`${lots.length} lots managed`}
-        actions={<button className="btn-primary flex items-center gap-2" onClick={openCreate}><Plus size={15}/>Add Lot</button>} />
+      <Header title="חניונים" subtitle={`${lots.length} חניונים מנוהלים`}
+        actions={<button className="btn-primary flex items-center gap-2" onClick={openCreate}><Plus size={15} />הוסף חניון</button>} />
 
       {/* Filters */}
       <div className="flex gap-3">
-        <input className="input-field max-w-xs" placeholder="Search name or city…" value={filter} onChange={e=>setFilter(e.target.value)} />
-        <select className="input-field max-w-xs" value={typeFilter} onChange={e=>setTypeFilter(e.target.value)}>
-          <option value="">All Types</option>
-          {['city','airport','mall','residential','corporate','hospital','stadium'].map(t=>(
+        <input className="input-field max-w-xs" placeholder="חפש שם או עיר…" value={filter} onChange={e => setFilter(e.target.value)} />
+        <select className="input-field max-w-xs" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+          <option value="">כל הסוגים</option>
+          {['city', 'airport', 'mall', 'residential', 'corporate', 'hospital', 'stadium'].map(t => (
             <option key={t} value={t}>{LOT_TYPE_LABELS[t]}</option>
           ))}
         </select>
@@ -107,31 +107,31 @@ export default function LotsPage() {
                       <span className="truncate">{lot.city} · {lot.location}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 ml-2">
-                    <Badge label={lot.lot_type} preset={lot.lot_type} />
-                    {!lot.is_active && <Badge label="Inactive" preset="unpaid" />}
+                  <div className="flex items-center gap-1 mr-2">
+                    <Badge label={LOT_TYPE_LABELS[lot.lot_type] ?? lot.lot_type} preset={lot.lot_type} />
+                    {!lot.is_active && <Badge label="לא פעיל" preset="unpaid" />}
                   </div>
                 </div>
 
                 {/* Occupancy bar */}
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-gray-500">Occupancy</span>
+                    <span className="text-gray-500">תפוסה</span>
                     <span className="font-medium" style={{ color: occupancyColor(occ) }}>{occ}%</span>
                   </div>
                   <div className="h-2 bg-[#1F2937] rounded-full overflow-hidden">
-                    <div className="h-full rounded-full transition-all" style={{ width:`${occ}%`, background: occupancyColor(occ) }} />
+                    <div className="h-full rounded-full transition-all" style={{ width: `${occ}%`, background: occupancyColor(occ) }} />
                   </div>
-                  <p className="text-gray-600 text-[10px] mt-1">{lot.occupied_spots} / {lot.spot_count} spots occupied</p>
+                  <p className="text-gray-600 text-[10px] mt-1">{lot.occupied_spots} / {lot.spot_count} מקומות תפוסים</p>
                 </div>
 
                 {/* Rates */}
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { label:'Hourly', value: formatCurrency(lot.hourly_rate) },
-                    { label:'Daily',  value: formatCurrency(lot.daily_rate) },
-                    { label:'Monthly',value: formatCurrency(lot.monthly_rate) },
-                  ].map(r=>(
+                    { label: 'שעתי', value: formatCurrency(lot.hourly_rate) },
+                    { label: 'יומי',  value: formatCurrency(lot.daily_rate) },
+                    { label: 'חודשי', value: formatCurrency(lot.monthly_rate) },
+                  ].map(r => (
                     <div key={r.label} className="bg-[#0C1220] rounded-lg p-2 text-center">
                       <p className="text-gray-600 text-[10px]">{r.label}</p>
                       <p className="text-white text-xs font-semibold">{r.value}</p>
@@ -164,58 +164,58 @@ export default function LotsPage() {
       )}
 
       {/* Create/Edit Modal */}
-      <Modal open={showModal} onClose={()=>setShowModal(false)} title={editing?.id ? 'Edit Parking Lot' : 'Add Parking Lot'} width="max-w-xl">
+      <Modal open={showModal} onClose={() => setShowModal(false)} title={editing?.id ? 'ערוך חניון' : 'הוסף חניון'} width="max-w-xl">
         {editing && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
-                <label className="text-xs text-gray-400 mb-1 block">Lot Name *</label>
-                <input className="input-field" value={editing.name??''} onChange={e=>setEditing({...editing,name:e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">שם חניון *</label>
+                <input className="input-field" value={editing.name ?? ''} onChange={e => setEditing({ ...editing, name: e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">City *</label>
-                <input className="input-field" value={editing.city??''} onChange={e=>setEditing({...editing,city:e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">עיר *</label>
+                <input className="input-field" value={editing.city ?? ''} onChange={e => setEditing({ ...editing, city: e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Type *</label>
-                <select className="input-field" value={editing.lot_type??'city'} onChange={e=>setEditing({...editing,lot_type:e.target.value as any})}>
-                  {Object.entries(LOT_TYPE_LABELS).map(([k,v])=><option key={k} value={k}>{v}</option>)}
+                <label className="text-xs text-gray-400 mb-1 block">סוג *</label>
+                <select className="input-field" value={editing.lot_type ?? 'city'} onChange={e => setEditing({ ...editing, lot_type: e.target.value as any })}>
+                  {Object.entries(LOT_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
               </div>
               <div className="col-span-2">
-                <label className="text-xs text-gray-400 mb-1 block">Location / Address</label>
-                <input className="input-field" value={editing.location??''} onChange={e=>setEditing({...editing,location:e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">כתובת</label>
+                <input className="input-field" value={editing.location ?? ''} onChange={e => setEditing({ ...editing, location: e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Total Spots</label>
-                <input type="number" className="input-field" value={editing.total_spots??0} onChange={e=>setEditing({...editing,total_spots:+e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">סה״כ מקומות</label>
+                <input type="number" className="input-field" value={editing.total_spots ?? 0} onChange={e => setEditing({ ...editing, total_spots: +e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Hourly Rate (₪)</label>
-                <input type="number" step="0.5" className="input-field" value={editing.hourly_rate??0} onChange={e=>setEditing({...editing,hourly_rate:+e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">תעריף שעתי (₪)</label>
+                <input type="number" step="0.5" className="input-field" value={editing.hourly_rate ?? 0} onChange={e => setEditing({ ...editing, hourly_rate: +e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Daily Rate (₪)</label>
-                <input type="number" step="1" className="input-field" value={editing.daily_rate??0} onChange={e=>setEditing({...editing,daily_rate:+e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">תעריף יומי (₪)</label>
+                <input type="number" step="1" className="input-field" value={editing.daily_rate ?? 0} onChange={e => setEditing({ ...editing, daily_rate: +e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Monthly Rate (₪)</label>
-                <input type="number" step="10" className="input-field" value={editing.monthly_rate??0} onChange={e=>setEditing({...editing,monthly_rate:+e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">תעריף חודשי (₪)</label>
+                <input type="number" step="10" className="input-field" value={editing.monthly_rate ?? 0} onChange={e => setEditing({ ...editing, monthly_rate: +e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Opening Time</label>
-                <input type="time" className="input-field" value={editing.opening_time??'06:00'} onChange={e=>setEditing({...editing,opening_time:e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">שעת פתיחה</label>
+                <input type="time" className="input-field" value={editing.opening_time ?? '06:00'} onChange={e => setEditing({ ...editing, opening_time: e.target.value })} />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Closing Time</label>
-                <input type="time" className="input-field" value={editing.closing_time??'23:00'} onChange={e=>setEditing({...editing,closing_time:e.target.value})} />
+                <label className="text-xs text-gray-400 mb-1 block">שעת סגירה</label>
+                <input type="time" className="input-field" value={editing.closing_time ?? '23:00'} onChange={e => setEditing({ ...editing, closing_time: e.target.value })} />
               </div>
             </div>
             <div className="flex gap-3 pt-2">
               <button className="btn-primary flex-1" onClick={handleSave} disabled={saving}>
-                {saving ? 'Saving…' : (editing.id ? 'Update Lot' : 'Create Lot')}
+                {saving ? 'שומר…' : (editing.id ? 'עדכן חניון' : 'צור חניון')}
               </button>
-              <button className="btn-ghost" onClick={()=>setShowModal(false)}>Cancel</button>
+              <button className="btn-ghost" onClick={() => setShowModal(false)}>ביטול</button>
             </div>
           </div>
         )}

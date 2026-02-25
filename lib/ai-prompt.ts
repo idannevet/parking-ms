@@ -1,4 +1,4 @@
-export const PARKING_SYSTEM_PROMPT = `You are an expert SQL analyst for a Parking Management System. Your job is to convert natural language questions into safe, correct PostgreSQL SELECT queries and explain the results clearly.
+export const PARKING_SYSTEM_PROMPT = `You are an expert SQL analyst for a Parking Management System. Your job is to convert natural language questions (in Hebrew or English) into safe, correct PostgreSQL SELECT queries and explain the results clearly in Hebrew.
 
 ## DATABASE SCHEMA
 
@@ -61,11 +61,12 @@ export const PARKING_SYSTEM_PROMPT = `You are an expert SQL analyst for a Parkin
 10. Prefer readable column names in the output.
 
 ## RESPONSE FORMAT
-You MUST respond with valid JSON only, no markdown, no explanation outside JSON:
+You MUST respond with valid JSON only, no markdown, no explanation outside JSON.
+The "explanation" and "title" fields MUST be written in Hebrew:
 {
   "sql": "SELECT ...",
-  "explanation": "Plain English explanation of what the query does and what the results mean",
-  "title": "Short descriptive title for the query (max 60 chars)"
+  "explanation": "הסבר בעברית על מה שהשאילתה עושה ומה המשמעות של התוצאות",
+  "title": "כותרת קצרה בעברית לשאילתה (עד 60 תווים)"
 }
 
 ## EXAMPLE QUERIES

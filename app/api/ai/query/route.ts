@@ -11,19 +11,34 @@ const BLOCKED_KEYWORDS = /\b(DROP|DELETE|UPDATE|INSERT|ALTER|TRUNCATE|GRANT|REVO
 function validateSQL(sql: string): { valid: boolean; reason?: string } {
   const clean = sql.trim().toUpperCase();
   if (!clean.startsWith('SELECT')) {
-    return { valid: false, reason: 'Only SELECT queries are permitted.' };
+    return { valid: false, reason: 'מותרות רק שאילתות SELECT.' };
   }
   if (BLOCKED_KEYWORDS.test(sql)) {
-    return { valid: false, reason: 'Query contains disallowed keywords.' };
+    return { valid: false, reason: 'השאילתה מכילה מילת מפתח אסורה.' };
   }
   return { valid: true };
+}
+
+function extractJSON(text: string): string {
+  // Try to find a JSON object anywhere in the response
+  const start = text.indexOf('{');
+  const end   = text.lastIndexOf('}');
+  if (start !== -1 && end !== -1 && end > start) {
+    return text.slice(start, end + 1);
+  }
+  // Fallback: strip markdown fences
+  return text
+    .replace(/^```json\s*/i, '')
+    .replace(/^```\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
 }
 
 export async function POST(req: NextRequest) {
   try {
     const { question } = await req.json();
     if (!question?.trim()) {
-      return NextResponse.json({ error: 'Question is required' }, { status: 400 });
+      return NextResponse.json({ error: 'שאלה נדרשת' }, { status: 400 });
     }
 
     // ── Step 1: Ask Claude to generate SQL ──────────────────
@@ -36,33 +51,31 @@ export async function POST(req: NextRequest) {
 
     const rawContent = message.content[0];
     if (rawContent.type !== 'text') {
-      return NextResponse.json({ error: 'Unexpected AI response format' }, { status: 500 });
+      return NextResponse.json({ error: 'תגובת AI בפורמט לא צפוי' }, { status: 500 });
     }
 
     // ── Step 2: Parse JSON response ─────────────────────────
     let parsed: { sql: string; explanation: string; title: string };
     try {
-      // Strip markdown code fences if present
-      const jsonStr = rawContent.text
-        .replace(/^```json\s*/i, '')
-        .replace(/^```\s*/i, '')
-        .replace(/\s*```$/i, '')
-        .trim();
+      const jsonStr = extractJSON(rawContent.text);
       parsed = JSON.parse(jsonStr);
     } catch {
       return NextResponse.json({
-        error: 'AI returned malformed JSON. Please rephrase your question.',
+        error: 'ה-AI החזיר תגובה לא תקינה. נסה לנסח מחדש את השאלה.',
         raw: rawContent.text.slice(0, 500),
       }, { status: 422 });
     }
 
     const { sql, explanation, title } = parsed;
+    if (!sql) {
+      return NextResponse.json({ error: 'ה-AI לא הצליח לייצר שאילתת SQL.' }, { status: 422 });
+    }
 
     // ── Step 3: Validate SQL safety ─────────────────────────
     const validation = validateSQL(sql);
     if (!validation.valid) {
       return NextResponse.json({
-        error: `SQL validation failed: ${validation.reason}`,
+        error: `אימות SQL נכשל: ${validation.reason}`,
         sql,
       }, { status: 422 });
     }
@@ -73,14 +86,23 @@ export async function POST(req: NextRequest) {
 
     if (rpcError) {
       return NextResponse.json({
-        error: `Query execution failed: ${rpcError.message}`,
+        error: `ביצוע השאילתה נכשל: ${rpcError.message}`,
         sql,
         explanation,
         title,
       }, { status: 422 });
     }
 
-    // rawData is JSONB array from the function
+    // Check if the function returned an error object instead of rows
+    if (rawData && typeof rawData === 'object' && !Array.isArray(rawData) && (rawData as any).error) {
+      return NextResponse.json({
+        error: `שגיאת מסד נתונים: ${(rawData as any).error}`,
+        sql,
+        explanation,
+        title,
+      }, { status: 422 });
+    }
+
     const rows = Array.isArray(rawData) ? rawData : [];
     const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
 
@@ -95,7 +117,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     console.error('AI query error:', err);
     return NextResponse.json(
-      { error: err?.message ?? 'Internal server error' },
+      { error: err?.message ?? 'שגיאה פנימית בשרת' },
       { status: 500 }
     );
   }

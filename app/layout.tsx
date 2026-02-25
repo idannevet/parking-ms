@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ParkingMS — Smart Parking Management',
-  description: 'AI-powered parking management system',
+  title: 'ParkingMS — מערכת ניהול חניה',
+  description: 'מערכת ניהול חניה חכמה מבוססת בינה מלאכותית',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="he" dir="rtl">
       <body>{children}</body>
     </html>
   );

@@ -19,47 +19,45 @@ interface HistoryItem {
 }
 
 const EXAMPLES = [
-  'Which parking lot has the highest revenue this month?',
-  'Show me the top 10 vehicles with the most violations',
-  'What is the average parking duration by lot type?',
-  'How many active subscriptions expire in the next 30 days?',
-  'List all unpaid violations over ₪200',
-  'Which hours of the day have the most parking sessions?',
-  'Show revenue breakdown by payment method',
-  'Find vehicles that have both a subscription and recent violations',
-  'What percentage of sessions are paid vs unpaid?',
-  'Show me lots with occupancy above 80%',
+  'איזה חניון הניב את ההכנסות הגבוהות ביותר החודש?',
+  'הצג את 10 כלי הרכב עם הכי הרבה הפרות',
+  'מה משך החנייה הממוצע לפי סוג חניון?',
+  'כמה מנויים פעילים יפוגו ב-30 הימים הקרובים?',
+  'רשום את כל ההפרות הלא שולמות מעל ₪200',
+  'באיזו שעה יש הכי הרבה חניות?',
+  'הצג פירוט הכנסות לפי אמצעי תשלום',
+  'מצא רכבים שיש להם גם מנוי וגם הפרות אחרונות',
+  'מה האחוז בין חניות ששולמו לחניות שלא שולמו?',
+  'הצג חניונים עם תפוסה מעל 80%',
 ];
 
 function SqlBlock({ sql }: { sql: string }) {
-  const keywords = ['SELECT','FROM','WHERE','JOIN','LEFT','INNER','GROUP BY','ORDER BY','HAVING','LIMIT','AND','OR','ON','AS','COUNT','SUM','AVG','MAX','MIN','DISTINCT','WITH','CASE','WHEN','THEN','ELSE','END','NOT','IN','IS','NULL','DESC','ASC'];
+  const keywords = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'LEFT', 'INNER', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'AND', 'OR', 'ON', 'AS', 'COUNT', 'SUM', 'AVG', 'MAX', 'MIN', 'DISTINCT', 'WITH', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'NOT', 'IN', 'IS', 'NULL', 'DESC', 'ASC'];
   const highlighted = sql.split('\n').map((line, i) => {
     let out = line;
     keywords.forEach(kw => {
       out = out.replace(new RegExp(`\\b(${kw})\\b`, 'g'), `<span class="text-blue-400 font-semibold">$1</span>`);
     });
-    // strings
     out = out.replace(/'([^']*)'/g, `<span class="text-emerald-400">'$1'</span>`);
-    // numbers
     out = out.replace(/\b(\d+)\b/g, `<span class="text-orange-400">$1</span>`);
     return <div key={i} dangerouslySetInnerHTML={{ __html: out || '&nbsp;' }} />;
   });
   return (
-    <pre className="text-xs font-mono leading-5 text-gray-300 overflow-x-auto">
+    <pre className="text-xs font-mono leading-5 text-gray-300 overflow-x-auto" dir="ltr">
       {highlighted}
     </pre>
   );
 }
 
 function ResultTable({ columns, data }: { columns: string[]; data: Record<string, unknown>[] }) {
-  if (!data.length) return <p className="text-gray-500 text-sm py-4 text-center">No rows returned.</p>;
+  if (!data.length) return <p className="text-gray-500 text-sm py-4 text-center">לא הוחזרו שורות.</p>;
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-[#1F2937]">
             {columns.map(c => (
-              <th key={c} className="px-3 py-2 text-left text-gray-500 text-xs font-medium uppercase tracking-wider whitespace-nowrap">{c.replace(/_/g,' ')}</th>
+              <th key={c} className="px-3 py-2 text-right text-gray-500 text-xs font-medium uppercase tracking-wider whitespace-nowrap">{c.replace(/_/g, ' ')}</th>
             ))}
           </tr>
         </thead>
@@ -72,8 +70,8 @@ function ResultTable({ columns, data }: { columns: string[]; data: Record<string
                 const isNum = typeof val === 'number';
                 const isMoney = isNum && (c.includes('revenue') || c.includes('amount') || c.includes('price') || c.includes('charge') || c.includes('fine'));
                 return (
-                  <td key={c} className={`px-3 py-2 text-xs whitespace-nowrap ${isNum ? 'text-right font-mono' : ''} ${isMoney ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
-                    {isMoney ? `₪${Number(val).toLocaleString('en-IL', {minimumFractionDigits:2,maximumFractionDigits:2})}` : str}
+                  <td key={c} className={`px-3 py-2 text-xs whitespace-nowrap ${isNum ? 'text-left font-mono' : ''} ${isMoney ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
+                    {isMoney ? `₪${Number(val).toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : str}
                   </td>
                 );
               })}
@@ -86,12 +84,12 @@ function ResultTable({ columns, data }: { columns: string[]; data: Record<string
 }
 
 export default function AiConsolePage() {
-  const [question, setQuestion]     = useState('');
-  const [loading, setLoading]       = useState(false);
-  const [result, setResult]         = useState<QueryResult | null>(null);
-  const [error, setError]           = useState('');
-  const [history, setHistory]       = useState<HistoryItem[]>([]);
-  const [showSql, setShowSql]       = useState(true);
+  const [question, setQuestion]       = useState('');
+  const [loading, setLoading]         = useState(false);
+  const [result, setResult]           = useState<QueryResult | null>(null);
+  const [error, setError]             = useState('');
+  const [history, setHistory]         = useState<HistoryItem[]>([]);
+  const [showSql, setShowSql]         = useState(true);
   const [showHistory, setShowHistory] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -117,7 +115,7 @@ export default function AiConsolePage() {
         body: JSON.stringify({ question: text }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Query failed');
+      if (!res.ok) throw new Error(json.error || 'השאילתה נכשלה');
       setResult(json);
       const newItem: HistoryItem = { question: text, result: json, ts: Date.now() };
       setHistory(prev => {
@@ -144,8 +142,8 @@ export default function AiConsolePage() {
           <Sparkles size={20} className="text-purple-400" />
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white">AI Query Console</h1>
-          <p className="text-gray-500 text-sm">Ask anything about your parking data in plain English</p>
+          <h1 className="text-xl font-bold text-white">קונסול שאילתות AI</h1>
+          <p className="text-gray-500 text-sm">שאל כל שאלה על נתוני החניה שלך בעברית</p>
         </div>
       </div>
 
@@ -157,25 +155,25 @@ export default function AiConsolePage() {
           value={question}
           onChange={e => setQuestion(e.target.value)}
           onKeyDown={handleKey}
-          placeholder="e.g. Which lot earned the most revenue last month?"
+          placeholder="לדוגמה: איזה חניון הרוויח הכי הרבה החודש?"
           className="w-full bg-[#0C1220] border border-[#1F2937] rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 resize-none"
         />
         <div className="flex items-center justify-between">
-          <p className="text-gray-600 text-xs">⌘ + Enter to run</p>
+          <p className="text-gray-600 text-xs">⌘ + Enter להרצה</p>
           <button
             onClick={() => ask()}
             disabled={loading || !question.trim()}
             className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors"
           >
             {loading ? <Spinner size={14} className="text-white" /> : <Send size={14} />}
-            {loading ? 'Thinking…' : 'Run Query'}
+            {loading ? 'מעבד…' : 'הרץ שאילתה'}
           </button>
         </div>
       </div>
 
       {/* Example chips */}
       <div>
-        <p className="text-gray-600 text-xs mb-2 flex items-center gap-1.5"><Lightbulb size={12}/> Example questions</p>
+        <p className="text-gray-600 text-xs mb-2 flex items-center gap-1.5"><Lightbulb size={12} /> שאלות לדוגמה</p>
         <div className="flex flex-wrap gap-2">
           {EXAMPLES.map(ex => (
             <button
@@ -192,7 +190,7 @@ export default function AiConsolePage() {
       {/* Error */}
       {error && (
         <div className="card border-red-500/30 bg-red-500/5 p-4">
-          <p className="text-red-400 text-sm font-medium">Query Error</p>
+          <p className="text-red-400 text-sm font-medium">שגיאה בשאילתה</p>
           <p className="text-red-300/70 text-xs mt-1">{error}</p>
         </div>
       )}
@@ -207,7 +205,7 @@ export default function AiConsolePage() {
               <div>
                 <p className="text-white font-semibold text-sm">{result.title}</p>
                 <p className="text-gray-400 text-sm mt-1 leading-relaxed">{result.explanation}</p>
-                <p className="text-gray-600 text-xs mt-2">{result.row_count.toLocaleString()} row{result.row_count !== 1 ? 's' : ''} returned</p>
+                <p className="text-gray-600 text-xs mt-2">{result.row_count.toLocaleString()} {result.row_count === 1 ? 'שורה' : 'שורות'} הוחזרו</p>
               </div>
             </div>
           </div>
@@ -216,11 +214,11 @@ export default function AiConsolePage() {
           <div className="card overflow-hidden">
             <button
               onClick={() => setShowSql(v => !v)}
-              className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-white/[0.02] transition-colors"
+              className="w-full flex items-center justify-between px-4 py-3 text-right hover:bg-white/[0.02] transition-colors"
             >
               <div className="flex items-center gap-2">
                 <Code2 size={14} className="text-blue-400" />
-                <span className="text-sm font-medium text-gray-300">Generated SQL</span>
+                <span className="text-sm font-medium text-gray-300">SQL שנוצר</span>
               </div>
               {showSql ? <ChevronUp size={14} className="text-gray-500" /> : <ChevronDown size={14} className="text-gray-500" />}
             </button>
@@ -235,8 +233,8 @@ export default function AiConsolePage() {
           <div className="card overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-[#1F2937]">
               <Table2 size={14} className="text-emerald-400" />
-              <span className="text-sm font-medium text-gray-300">Results</span>
-              <span className="ml-auto text-xs text-gray-600">{result.row_count} rows</span>
+              <span className="text-sm font-medium text-gray-300">תוצאות</span>
+              <span className="mr-auto text-xs text-gray-600">{result.row_count} שורות</span>
             </div>
             <div className="p-2">
               <ResultTable columns={result.columns} data={result.data} />
@@ -254,7 +252,7 @@ export default function AiConsolePage() {
           >
             <div className="flex items-center gap-2">
               <Clock size={14} className="text-gray-500" />
-              <span className="text-sm font-medium text-gray-400">Recent Queries</span>
+              <span className="text-sm font-medium text-gray-400">שאילתות אחרונות</span>
               <span className="text-xs text-gray-600 bg-[#1F2937] rounded-full px-2 py-0.5">{history.length}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -273,10 +271,10 @@ export default function AiConsolePage() {
                 <button
                   key={i}
                   onClick={() => { setQuestion(h.question); setResult(h.result); setError(''); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  className="w-full px-4 py-3 text-left hover:bg-white/[0.02] border-b border-[#1F2937]/50 last:border-0 transition-colors group"
+                  className="w-full px-4 py-3 text-right hover:bg-white/[0.02] border-b border-[#1F2937]/50 last:border-0 transition-colors group"
                 >
                   <p className="text-gray-300 text-sm group-hover:text-white transition-colors truncate">{h.question}</p>
-                  <p className="text-gray-600 text-xs mt-0.5">{h.result.row_count} rows · {new Date(h.ts).toLocaleTimeString()}</p>
+                  <p className="text-gray-600 text-xs mt-0.5">{h.result.row_count} שורות · {new Date(h.ts).toLocaleTimeString('he-IL')}</p>
                 </button>
               ))}
             </div>
