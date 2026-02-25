@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     } catch {
       return NextResponse.json({
         error: 'ה-AI החזיר תגובה לא תקינה. נסה לנסח מחדש את השאלה.',
-        raw: rawContent.text.slice(0, 500),
+        raw: rawText.slice(0, 500),
       }, { status: 422 });
     }
 
