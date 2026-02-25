@@ -111,9 +111,36 @@ export async function POST(req: NextRequest) {
     const rows = Array.isArray(rawData) ? rawData : [];
     const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
 
+    // ── Step 5: Generate written narrative from actual results ──
+    let narrative = explanation; // fallback
+    try {
+      const sample = rows.slice(0, 15);
+      const narrativeCompletion = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        max_tokens: 350,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'אתה אנליסט נתונים. כתוב ניתוח קצר ב-2-4 משפטים בעברית על תוצאות השאילתה. ' +
+              'היה ספציפי לגבי מספרים, דפוסים ותובנות בנתונים. ' +
+              'אל תזכיר SQL, טבלאות, או פרטים טכניים. כתוב כאילו אתה מסביר לאדם עסקי.',
+          },
+          {
+            role: 'user',
+            content: `השאלה: ${question}\n\nתוצאות (${rows.length} שורות):\n${JSON.stringify(sample, null, 2)}`,
+          },
+        ],
+      });
+      narrative = narrativeCompletion.choices[0]?.message?.content?.trim() ?? explanation;
+    } catch {
+      // keep fallback
+    }
+
     return NextResponse.json({
       sql,
       explanation,
+      narrative,
       title,
       data: rows,
       columns,

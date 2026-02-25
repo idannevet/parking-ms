@@ -7,6 +7,7 @@ import { translateValue } from '@/lib/utils';
 interface QueryResult {
   sql: string;
   explanation: string;
+  narrative: string;
   title: string;
   data: Record<string, unknown>[];
   columns: string[];
@@ -96,7 +97,7 @@ export default function AiConsolePage() {
   const [result, setResult]           = useState<QueryResult | null>(null);
   const [error, setError]             = useState('');
   const [history, setHistory]         = useState<HistoryItem[]>([]);
-  const [showSql, setShowSql]         = useState(true);
+  const [showSql, setShowSql]         = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -217,7 +218,17 @@ export default function AiConsolePage() {
             </div>
           </div>
 
-          {/* SQL Toggle */}
+          {/* AI Narrative */}
+          <div className="card p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Sparkles size={13} className="text-purple-400" />
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed">{result.narrative ?? result.explanation}</p>
+            </div>
+          </div>
+
+          {/* SQL Toggle (collapsed by default) */}
           <div className="card overflow-hidden">
             <button
               onClick={() => setShowSql(v => !v)}
@@ -225,7 +236,7 @@ export default function AiConsolePage() {
             >
               <div className="flex items-center gap-2">
                 <Code2 size={14} className="text-blue-400" />
-                <span className="text-sm font-medium text-gray-300">SQL שנוצר</span>
+                <span className="text-sm font-medium text-gray-500">הצג SQL</span>
               </div>
               {showSql ? <ChevronUp size={14} className="text-gray-500" /> : <ChevronDown size={14} className="text-gray-500" />}
             </button>
