@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 import { supabaseAdmin } from '@/lib/supabase';
 import { PARKING_SYSTEM_PROMPT } from '@/lib/ai-prompt';
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Block destructive SQL keywords
 const BLOCKED_KEYWORDS = /\b(DROP|DELETE|UPDATE|INSERT|ALTER|TRUNCATE|GRANT|REVOKE|CREATE|EXEC|EXECUTE|COPY|VACUUM|ANALYZE)\b/gi;
@@ -41,23 +41,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'שאלה נדרשת' }, { status: 400 });
     }
 
-    // ── Step 1: Ask Claude to generate SQL ──────────────────
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
+    // ── Step 1: Ask OpenAI to generate SQL ──────────────────
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o',
       max_tokens: 1024,
-      system: PARKING_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: question }],
+      messages: [
+        { role: 'system', content: PARKING_SYSTEM_PROMPT },
+        { role: 'user', content: question },
+      ],
     });
 
-    const rawContent = message.content[0];
-    if (rawContent.type !== 'text') {
+    const rawText = completion.choices[0]?.message?.content ?? '';
+    if (!rawText) {
       return NextResponse.json({ error: 'תגובת AI בפורמט לא צפוי' }, { status: 500 });
     }
 
     // ── Step 2: Parse JSON response ─────────────────────────
     let parsed: { sql: string; explanation: string; title: string };
     try {
-      const jsonStr = extractJSON(rawContent.text);
+      const jsonStr = extractJSON(rawText);
       parsed = JSON.parse(jsonStr);
     } catch {
       return NextResponse.json({
