@@ -5,12 +5,13 @@ import { PARKING_SYSTEM_PROMPT } from '@/lib/ai-prompt';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Block destructive SQL keywords
-const BLOCKED_KEYWORDS = /\b(DROP|DELETE|UPDATE|INSERT|ALTER|TRUNCATE|GRANT|REVOKE|CREATE|EXEC|EXECUTE|COPY|VACUUM|ANALYZE)\b/gi;
+// Block destructive SQL keywords (no `g` flag — avoids stateful lastIndex bugs)
+const BLOCKED_KEYWORDS = /\b(DROP|DELETE|UPDATE|INSERT|ALTER|TRUNCATE|GRANT|REVOKE|CREATE|EXEC|EXECUTE|COPY|VACUUM|ANALYZE)\b/i;
 
 function validateSQL(sql: string): { valid: boolean; reason?: string } {
   const clean = sql.trim().toUpperCase();
-  if (!clean.startsWith('SELECT')) {
+  // Allow SELECT or WITH (CTEs)
+  if (!clean.startsWith('SELECT') && !clean.startsWith('WITH')) {
     return { valid: false, reason: 'מותרות רק שאילתות SELECT.' };
   }
   if (BLOCKED_KEYWORDS.test(sql)) {
@@ -83,8 +84,10 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Step 4: Execute via Supabase RPC ────────────────────
+    // Normalize: strip BOM, leading/trailing whitespace before sending
+    const cleanSql = sql.replace(/^\uFEFF/, '').trim();
     const { data: rawData, error: rpcError } = await supabaseAdmin
-      .rpc('execute_ai_query', { query_text: sql });
+      .rpc('execute_ai_query', { query_text: cleanSql });
 
     if (rpcError) {
       return NextResponse.json({
