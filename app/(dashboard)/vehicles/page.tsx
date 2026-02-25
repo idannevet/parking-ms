@@ -85,7 +85,7 @@ export default function VehiclesPage() {
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#1F2937]">
+            <tr className="border-b border-gray-200">
               {['לוחית רישוי', 'בעלים', 'סוג', 'יצרן / דגם', 'צבע', 'שנה', 'חשבון', 'תאריך רישום'].map(h => (
                 <th key={h} className="px-4 py-3 text-right text-gray-500 text-xs font-medium uppercase tracking-wider">{h}</th>
               ))}
@@ -95,14 +95,14 @@ export default function VehiclesPage() {
             {loading ? (
               <tr><td colSpan={8} className="text-center py-16"><Spinner size={24} className="text-blue-400 mx-auto" /></td></tr>
             ) : vehicles.map(v => (
-              <tr key={v.id} className="border-b border-[#1F2937] hover:bg-white/[0.02] transition-colors">
+              <tr key={v.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-3 font-mono text-blue-400 font-semibold text-sm">{v.license_plate}</td>
-                <td className="px-4 py-3 text-white font-medium">{v.owner_name}</td>
+                <td className="px-4 py-3 text-gray-900 font-medium">{v.owner_name}</td>
                 <td className="px-4 py-3"><span className="text-lg">{typeIcons[v.vehicle_type] ?? '🚗'}</span></td>
                 <td className="px-4 py-3 text-gray-300">{v.make}{v.model ? ` ${v.model}` : ''}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full border border-[#374151]" style={{ background: v.color?.toLowerCase() ?? '#6B7280' }} />
+                    <div className="w-3 h-3 rounded-full border border-gray-300" style={{ background: v.color?.toLowerCase() ?? '#6B7280' }} />
                     <span className="text-gray-400 text-xs">{v.color}</span>
                   </div>
                 </td>
@@ -165,9 +165,9 @@ export default function VehiclesPage() {
               <div><label className="text-xs text-gray-400 mb-1 block">דגם</label><input className="input-field" value={editing.model ?? ''} onChange={e => setEditing({ ...editing, model: e.target.value })} /></div>
               <div><label className="text-xs text-gray-400 mb-1 block">צבע</label><input className="input-field" value={editing.color ?? ''} onChange={e => setEditing({ ...editing, color: e.target.value })} /></div>
               <div><label className="text-xs text-gray-400 mb-1 block">שנה</label><input type="number" className="input-field" value={editing.year ?? ''} onChange={e => setEditing({ ...editing, year: +e.target.value })} /></div>
-              <div className="col-span-2 flex items-center gap-3 p-3 bg-[#0C1220] rounded-lg">
+              <div className="col-span-2 flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                 <input type="checkbox" id="corp" checked={!!editing.is_corporate} onChange={e => setEditing({ ...editing, is_corporate: e.target.checked })} className="w-4 h-4 accent-blue-500" />
-                <label htmlFor="corp" className="text-gray-300 text-sm">חשבון עסקי</label>
+                <label htmlFor="corp" className="text-gray-700 text-sm">חשבון עסקי</label>
               </div>
               {editing.is_corporate && (
                 <div className="col-span-2">

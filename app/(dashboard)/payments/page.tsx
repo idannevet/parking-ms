@@ -65,7 +65,7 @@ export default function PaymentsPage() {
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#1F2937]">
+            <tr className="border-b border-gray-200">
               {['עסקה', 'רכב', 'חניון', 'אמצעי תשלום', 'סכום', 'תאריך', 'סטטוס'].map(h => (
                 <th key={h} className="px-4 py-3 text-right text-gray-500 text-xs font-medium uppercase tracking-wider">{h}</th>
               ))}
@@ -75,17 +75,17 @@ export default function PaymentsPage() {
             {loading ? (
               <tr><td colSpan={7} className="text-center py-16"><Spinner size={24} className="text-blue-400 mx-auto" /></td></tr>
             ) : payments.map(p => (
-              <tr key={p.id} className="border-b border-[#1F2937] hover:bg-white/[0.02]">
+              <tr key={p.id} className="border-b border-gray-200 hover:bg-gray-50">
                 <td className="px-4 py-3 font-mono text-gray-500 text-xs">{p.transaction_id ?? p.id.slice(0, 8)}</td>
                 <td className="px-4 py-3 text-blue-400 font-mono text-sm font-semibold">{p.session?.vehicle?.license_plate ?? '—'}</td>
-                <td className="px-4 py-3 text-gray-300 text-xs">{p.session?.lot?.name ?? '—'}</td>
+                <td className="px-4 py-3 text-gray-700 text-xs">{p.session?.lot?.name ?? '—'}</td>
                 <td className="px-4 py-3">
-                  <span className="flex items-center gap-1.5 text-gray-300 text-xs">
+                  <span className="flex items-center gap-1.5 text-gray-700 text-xs">
                     <span>{METHOD_ICONS[p.payment_method]}</span>
                     <span>{METHOD_LABELS[p.payment_method] ?? p.payment_method}</span>
                   </span>
                 </td>
-                <td className="px-4 py-3 text-white font-bold">{formatCurrency(p.amount)}</td>
+                <td className="px-4 py-3 text-gray-900 font-bold">{formatCurrency(p.amount)}</td>
                 <td className="px-4 py-3 text-gray-400 text-xs">{formatDate(p.payment_date, true)}</td>
                 <td className="px-4 py-3"><Badge label={STATUS_LABELS[p.status] ?? p.status} preset={p.status} /></td>
               </tr>

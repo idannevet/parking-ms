@@ -2,37 +2,37 @@ import { cn } from '@/lib/utils';
 
 const PRESETS: Record<string, string> = {
   // payment status
-  paid:         'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  unpaid:       'bg-red-500/10 text-red-400 border border-red-500/20',
-  pending:      'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
-  subscription: 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
-  waived:       'bg-gray-500/10 text-gray-400 border border-gray-500/20',
+  paid:         'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  unpaid:       'bg-red-50 text-red-700 border border-red-200',
+  pending:      'bg-yellow-50 text-yellow-700 border border-yellow-200',
+  subscription: 'bg-purple-50 text-purple-700 border border-purple-200',
+  waived:       'bg-gray-100 text-gray-600 border border-gray-200',
   // payment status
-  completed:    'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  failed:       'bg-red-500/10 text-red-400 border border-red-500/20',
-  refunded:     'bg-orange-500/10 text-orange-400 border border-orange-500/20',
+  completed:    'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  failed:       'bg-red-50 text-red-700 border border-red-200',
+  refunded:     'bg-orange-50 text-orange-700 border border-orange-200',
   // sensor
-  active:       'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  faulty:       'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
-  offline:      'bg-red-500/10 text-red-400 border border-red-500/20',
+  active:       'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  faulty:       'bg-yellow-50 text-yellow-700 border border-yellow-200',
+  offline:      'bg-red-50 text-red-700 border border-red-200',
   // lot type
-  city:         'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-  airport:      'bg-purple-500/10 text-purple-400 border border-purple-500/20',
-  mall:         'bg-amber-500/10 text-amber-400 border border-amber-500/20',
-  residential:  'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  corporate:    'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
-  hospital:     'bg-red-500/10 text-red-400 border border-red-500/20',
-  stadium:      'bg-orange-500/10 text-orange-400 border border-orange-500/20',
+  city:         'bg-blue-50 text-blue-700 border border-blue-200',
+  airport:      'bg-purple-50 text-purple-700 border border-purple-200',
+  mall:         'bg-amber-50 text-amber-700 border border-amber-200',
+  residential:  'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  corporate:    'bg-cyan-50 text-cyan-700 border border-cyan-200',
+  hospital:     'bg-red-50 text-red-700 border border-red-200',
+  stadium:      'bg-orange-50 text-orange-700 border border-orange-200',
   // bool
-  true:         'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-  false:        'bg-gray-500/10 text-gray-400 border border-gray-500/20',
+  true:         'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  false:        'bg-gray-100 text-gray-600 border border-gray-200',
 };
 
 interface Props { label: string; preset?: string; className?: string; }
 export default function Badge({ label, preset, className }: Props) {
   const key = preset ?? label.toLowerCase();
   return (
-    <span className={cn('badge', PRESETS[key] ?? 'bg-gray-500/10 text-gray-400 border border-gray-500/20', className)}>
+    <span className={cn('badge', PRESETS[key] ?? 'bg-gray-100 text-gray-600 border border-gray-200', className)}>
       {label}
     </span>
   );

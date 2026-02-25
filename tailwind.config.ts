@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: { DEFAULT: '#0C1220', card: '#111827', sidebar: '#0A0F1A' },
-        border: { DEFAULT: '#1F2937', light: '#374151' },
+        bg: { DEFAULT: '#F8FAFC', card: '#FFFFFF', sidebar: '#FFFFFF' },
+        border: { DEFAULT: '#E2E8F0', light: '#CBD5E1' },
         accent: { blue: '#3B82F6', green: '#10B981', purple: '#8B5CF6', orange: '#F59E0B', red: '#EF4444', cyan: '#06B6D4' },
       },
       fontFamily: { sans: ['Rubik', 'system-ui', 'sans-serif'] },

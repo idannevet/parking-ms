@@ -43,7 +43,7 @@ function SqlBlock({ sql }: { sql: string }) {
     return <div key={i} dangerouslySetInnerHTML={{ __html: out || '&nbsp;' }} />;
   });
   return (
-    <pre className="text-xs font-mono leading-5 text-gray-300 overflow-x-auto" dir="ltr">
+    <pre className="text-xs font-mono leading-5 text-gray-700 overflow-x-auto" dir="ltr">
       {highlighted}
     </pre>
   );
@@ -55,7 +55,7 @@ function ResultTable({ columns, data }: { columns: string[]; data: Record<string
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[#1F2937]">
+          <tr className="border-b border-gray-200">
             {columns.map(c => (
               <th key={c} className="px-3 py-2 text-right text-gray-500 text-xs font-medium uppercase tracking-wider whitespace-nowrap">
                 {c.replace(/_/g, ' ')}
@@ -65,7 +65,7 @@ function ResultTable({ columns, data }: { columns: string[]; data: Record<string
         </thead>
         <tbody>
           {data.map((row, i) => (
-            <tr key={i} className="border-b border-[#1F2937]/50 hover:bg-white/[0.02]">
+            <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
               {columns.map(c => {
                 const val = row[c];
                 const isNum   = typeof val === 'number';
@@ -76,7 +76,7 @@ function ResultTable({ columns, data }: { columns: string[]; data: Record<string
                   : isEnum ? translateValue(val)
                   : (val === null || val === undefined ? '—' : String(val));
                 return (
-                  <td key={c} className={`px-3 py-2 text-xs whitespace-nowrap ${isNum ? 'text-left font-mono' : ''} ${isMoney ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
+                  <td key={c} className={`px-3 py-2 text-xs whitespace-nowrap ${isNum ? 'text-left font-mono' : ''} ${isMoney ? 'text-emerald-400 font-semibold' : 'text-gray-700'}`}>
                     {display}
                   </td>
                 );
@@ -99,7 +99,7 @@ function AssistantBubble({ msg }: { msg: AssistantMessage }) {
         <div className="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0">
           <Sparkles size={14} className="text-purple-400 animate-pulse" />
         </div>
-        <div className="flex items-center gap-2 bg-[#111827] border border-[#1F2937] rounded-2xl rounded-tr-sm px-4 py-3">
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-2xl rounded-tr-sm px-4 py-3">
           <Spinner size={13} className="text-purple-400" />
           <span className="text-gray-400 text-sm">מנתח נתונים…</span>
         </div>
@@ -129,30 +129,30 @@ function AssistantBubble({ msg }: { msg: AssistantMessage }) {
 
       <div className="flex-1 space-y-2 min-w-0">
         {/* Narrative */}
-        <div className="bg-[#111827] border border-[#1F2937] rounded-2xl rounded-tr-sm px-4 py-3 space-y-1.5">
-          <p className="text-white font-semibold text-sm">{result.title}</p>
-          <p className="text-gray-300 text-sm leading-relaxed">{result.narrative ?? result.explanation}</p>
+        <div className="bg-white border border-gray-200 rounded-2xl rounded-tr-sm px-4 py-3 space-y-1.5">
+          <p className="text-gray-900 font-semibold text-sm">{result.title}</p>
+          <p className="text-gray-700 text-sm leading-relaxed">{result.narrative ?? result.explanation}</p>
           <p className="text-gray-600 text-xs">{result.row_count.toLocaleString()} שורות הוחזרו</p>
         </div>
 
         {/* Data table */}
         {result.row_count > 0 && (
-          <div className="border border-[#1F2937] rounded-xl overflow-hidden">
+          <div className="border border-gray-200 rounded-xl overflow-hidden">
             <button
               onClick={() => setShowTable(v => !v)}
-              className="w-full flex items-center justify-between px-3 py-2 hover:bg-white/[0.02] transition-colors"
+              className="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 transition-colors"
             >
               <div className="flex items-center gap-1.5">
                 <Table2 size={12} className="text-emerald-400" />
                 <span className="text-xs text-gray-400">טבלת נתונים</span>
-                <span className="text-xs text-gray-600 bg-[#1F2937] rounded-full px-1.5">{result.row_count}</span>
+                <span className="text-xs text-gray-600 bg-gray-100 rounded-full px-1.5">{result.row_count}</span>
               </div>
               {showTable
                 ? <ChevronUp size={12} className="text-gray-600" />
                 : <ChevronDown size={12} className="text-gray-600" />}
             </button>
             {showTable && (
-              <div className="border-t border-[#1F2937] bg-[#0C1220] p-2">
+              <div className="border-t border-gray-200 bg-gray-50 p-2">
                 <ResultTable columns={result.columns} data={result.data} />
               </div>
             )}
@@ -169,7 +169,7 @@ function AssistantBubble({ msg }: { msg: AssistantMessage }) {
           {showSql ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
         </button>
         {showSql && (
-          <div className="border border-[#1F2937] rounded-xl bg-[#0C1220] px-4 py-3">
+          <div className="border border-gray-200 rounded-xl bg-gray-50 px-4 py-3">
             <SqlBlock sql={result.sql} />
           </div>
         )}
@@ -261,7 +261,7 @@ export default function AiConsolePage() {
               <div className="w-16 h-16 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mx-auto mb-3">
                 <Sparkles size={28} className="text-purple-400" />
               </div>
-              <p className="text-white font-medium">במה אוכל לעזור?</p>
+              <p className="text-gray-900 font-medium">במה אוכל לעזור?</p>
               <p className="text-gray-500 text-sm mt-1">שאל שאלה על נתוני החניה שלך</p>
             </div>
             <div className="text-center">
@@ -273,7 +273,7 @@ export default function AiConsolePage() {
                   <button
                     key={ex}
                     onClick={() => ask(ex)}
-                    className="text-xs px-3 py-1.5 rounded-full bg-[#111827] border border-[#1F2937] text-gray-400 hover:border-purple-500/40 hover:text-purple-300 transition-colors"
+                    className="text-xs px-3 py-1.5 rounded-full bg-white border border-gray-200 text-gray-400 hover:border-purple-500/40 hover:text-purple-300 transition-colors"
                   >
                     {ex}
                   </button>
@@ -287,8 +287,8 @@ export default function AiConsolePage() {
         {messages.map((msg, i) =>
           msg.role === 'user' ? (
             <div key={i} className="flex">
-              <div className="ml-auto bg-[#1E1B4B] border border-purple-500/20 rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-[70%]">
-                <p className="text-white text-sm">{msg.text}</p>
+              <div className="ml-auto bg-blue-50 border border-blue-200 rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-[70%]">
+                <p className="text-gray-900 text-sm">{msg.text}</p>
               </div>
             </div>
           ) : (
@@ -299,7 +299,7 @@ export default function AiConsolePage() {
       </div>
 
       {/* Input bar */}
-      <div className="flex-shrink-0 border-t border-[#1F2937] pt-4">
+      <div className="flex-shrink-0 border-t border-gray-200 pt-4">
         <div className="flex gap-3 items-end">
           <textarea
             ref={textareaRef}
@@ -308,7 +308,7 @@ export default function AiConsolePage() {
             onChange={e => setQuestion(e.target.value)}
             onKeyDown={handleKey}
             placeholder="שאל שאלה על נתוני החניה…"
-            className="flex-1 bg-[#111827] border border-[#1F2937] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 resize-none"
+            className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-500/50 resize-none"
           />
           <button
             onClick={() => ask()}

@@ -100,7 +100,7 @@ export default function LotsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: LOT_TYPE_COLORS[lot.lot_type] }} />
-                      <h3 className="text-white font-semibold text-sm truncate">{lot.name}</h3>
+                      <h3 className="text-gray-900 font-semibold text-sm truncate">{lot.name}</h3>
                     </div>
                     <div className="flex items-center gap-1 text-gray-500 text-xs">
                       <MapPin size={11} />
@@ -119,7 +119,7 @@ export default function LotsPage() {
                     <span className="text-gray-500">תפוסה</span>
                     <span className="font-medium" style={{ color: occupancyColor(occ) }}>{occ}%</span>
                   </div>
-                  <div className="h-2 bg-[#1F2937] rounded-full overflow-hidden">
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full rounded-full transition-all" style={{ width: `${occ}%`, background: occupancyColor(occ) }} />
                   </div>
                   <p className="text-gray-600 text-[10px] mt-1">{lot.occupied_spots} / {lot.spot_count} מקומות תפוסים</p>
@@ -132,27 +132,27 @@ export default function LotsPage() {
                     { label: 'יומי',  value: formatCurrency(lot.daily_rate) },
                     { label: 'חודשי', value: formatCurrency(lot.monthly_rate) },
                   ].map(r => (
-                    <div key={r.label} className="bg-[#0C1220] rounded-lg p-2 text-center">
+                    <div key={r.label} className="bg-gray-50 rounded-lg p-2 text-center">
                       <p className="text-gray-600 text-[10px]">{r.label}</p>
-                      <p className="text-white text-xs font-semibold">{r.value}</p>
+                      <p className="text-gray-900 text-xs font-semibold">{r.value}</p>
                     </div>
                   ))}
                 </div>
 
                 {/* Hours & actions */}
-                <div className="flex items-center justify-between pt-1 border-t border-[#1F2937]">
+                <div className="flex items-center justify-between pt-1 border-t border-gray-200">
                   <div className="flex items-center gap-1 text-gray-500 text-xs">
                     <Clock size={11} />
                     <span>{lot.opening_time} – {lot.closing_time}</span>
                   </div>
                   <div className="flex gap-1">
-                    <button onClick={() => handleToggle(lot)} className="p-1.5 rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors">
+                    <button onClick={() => handleToggle(lot)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-colors">
                       {lot.is_active ? <ToggleRight size={15} className="text-emerald-400" /> : <ToggleLeft size={15} />}
                     </button>
-                    <button onClick={() => openEdit(lot)} className="p-1.5 rounded-lg hover:bg-white/5 text-gray-500 hover:text-blue-400 transition-colors">
+                    <button onClick={() => openEdit(lot)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-blue-400 transition-colors">
                       <Edit2 size={14} />
                     </button>
-                    <button onClick={() => handleDelete(lot.id)} className="p-1.5 rounded-lg hover:bg-white/5 text-gray-500 hover:text-red-400 transition-colors">
+                    <button onClick={() => handleDelete(lot.id)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-red-400 transition-colors">
                       <Trash2 size={14} />
                     </button>
                   </div>

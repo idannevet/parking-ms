@@ -18,11 +18,11 @@ export default function PeakHoursChart({ data }: Props) {
           tickFormatter={h => [0,6,12,18,23].includes(h) ? fmt(h) : ''} />
         <YAxis hide />
         <Tooltip
-          cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+          cursor={{ fill: 'rgba(0,0,0,0.03)' }}
           content={({ active, payload }) =>
             active && payload?.length ? (
-              <div className="bg-[#1F2937] border border-[#374151] rounded-lg px-3 py-2 text-xs">
-                <p className="text-white font-semibold">{fmt(payload[0].payload.hour)}</p>
+              <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs">
+                <p className="text-gray-900 font-semibold">{fmt(payload[0].payload.hour)}</p>
                 <p className="text-blue-400">{payload[0].value} sessions</p>
               </div>
             ) : null
@@ -31,7 +31,7 @@ export default function PeakHoursChart({ data }: Props) {
         <Bar dataKey="sessions" radius={[2, 2, 0, 0]}>
           {chartData.map((d, i) => {
             const intensity = d.sessions / maxSessions;
-            const color = intensity > 0.75 ? '#EF4444' : intensity > 0.5 ? '#F59E0B' : intensity > 0.25 ? '#3B82F6' : '#1F2937';
+            const color = intensity > 0.75 ? '#EF4444' : intensity > 0.5 ? '#F59E0B' : intensity > 0.25 ? '#3B82F6' : '#E5E7EB';
             return <Cell key={i} fill={color} />;
           })}
         </Bar>

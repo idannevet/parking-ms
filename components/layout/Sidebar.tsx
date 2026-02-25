@@ -16,16 +16,16 @@ const NAV = [
 export default function Sidebar() {
   const path = usePathname();
   return (
-    <aside className="fixed right-0 top-0 h-full w-60 bg-[#0A0F1A] border-l border-[#1F2937] flex flex-col z-40">
+    <aside className="fixed right-0 top-0 h-full w-60 bg-white border-l border-gray-200 flex flex-col z-40">
       {/* Logo */}
-      <div className="px-5 py-5 border-b border-[#1F2937]">
+      <div className="px-5 py-5 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
             <Building2 size={18} className="text-white" />
           </div>
           <div>
-            <p className="text-white font-bold text-sm leading-tight">ParkingMS</p>
-            <p className="text-gray-500 text-[10px]">חניה חכמה בעיר</p>
+            <p className="text-gray-900 font-bold text-sm leading-tight">ParkingMS</p>
+            <p className="text-gray-400 text-[10px]">חניה חכמה בעיר</p>
           </div>
         </div>
       </div>
@@ -38,8 +38,8 @@ export default function Sidebar() {
             <Link key={href} href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 active
-                  ? 'bg-blue-600/15 text-blue-400 border border-blue-600/20'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}>
               <Icon size={17} strokeWidth={active ? 2.2 : 1.8} />
               {label}
@@ -48,31 +48,31 @@ export default function Sidebar() {
         })}
 
         {/* AI Console — special */}
-        <div className="pt-3 mt-2 border-t border-[#1F2937]">
+        <div className="pt-3 mt-2 border-t border-gray-200">
           <Link href="/ai-console"
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
               path === '/ai-console'
-                ? 'bg-purple-600/15 text-purple-400 border border-purple-600/20'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                ? 'bg-purple-50 text-purple-600 border border-purple-200'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}>
             <Sparkles size={17} />
             קונסול AI
-            <span className="mr-auto text-[9px] font-bold bg-purple-600/20 text-purple-400 px-1.5 py-0.5 rounded-full">AI</span>
+            <span className="mr-auto text-[9px] font-bold bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full">AI</span>
           </Link>
         </div>
       </nav>
 
       {/* Footer */}
-      <div className="px-5 py-4 border-t border-[#1F2937]">
+      <div className="px-5 py-4 border-t border-gray-200">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
             <span className="text-white text-xs font-bold">מ</span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-xs font-medium truncate">מנהל</p>
-            <p className="text-gray-500 text-[10px] truncate">admin@parkingms.co.il</p>
+            <p className="text-gray-900 text-xs font-medium truncate">מנהל</p>
+            <p className="text-gray-400 text-[10px] truncate">admin@parkingms.co.il</p>
           </div>
-          <Settings size={14} className="text-gray-600 cursor-pointer hover:text-gray-400" />
+          <Settings size={14} className="text-gray-400 cursor-pointer hover:text-gray-600" />
         </div>
       </div>
     </aside>

@@ -64,7 +64,7 @@ export default function SubscriptionsPage() {
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#1F2937]">
+            <tr className="border-b border-gray-200">
               {['רכב', 'בעלים', 'חניון', 'סוג', 'מחיר', 'התחלה', 'סיום', 'חידוש אוטומטי', 'סטטוס'].map(h => (
                 <th key={h} className="px-4 py-3 text-right text-gray-500 text-xs font-medium uppercase tracking-wider">{h}</th>
               ))}
@@ -77,19 +77,19 @@ export default function SubscriptionsPage() {
               const daysLeft = s.end_date ? Math.ceil((new Date(s.end_date).getTime() - Date.now()) / 86400000) : 0;
               const expiringSoon = s.is_active && daysLeft > 0 && daysLeft <= 14;
               return (
-                <tr key={s.id} className={`border-b border-[#1F2937] hover:bg-white/[0.02] ${expiringSoon ? 'bg-yellow-500/5' : ''}`}>
+                <tr key={s.id} className={`border-b border-gray-200 hover:bg-gray-50 ${expiringSoon ? 'bg-yellow-500/5' : ''}`}>
                   <td className="px-4 py-3 font-mono text-blue-400 text-sm font-semibold">{s.vehicle?.license_plate ?? '—'}</td>
-                  <td className="px-4 py-3 text-gray-300 text-xs">
+                  <td className="px-4 py-3 text-gray-700 text-xs">
                     <p>{s.vehicle?.owner_name ?? '—'}</p>
                     {s.vehicle?.is_corporate && <p className="text-gray-600 text-[10px]">{s.vehicle?.company_name}</p>}
                   </td>
-                  <td className="px-4 py-3 text-gray-300 text-xs">{s.lot?.name ?? '—'}</td>
+                  <td className="px-4 py-3 text-gray-700 text-xs">{s.lot?.name ?? '—'}</td>
                   <td className="px-4 py-3">
-                    <span className="flex items-center gap-1 text-gray-300 text-sm">
+                    <span className="flex items-center gap-1 text-gray-700 text-sm">
                       {TYPE_ICONS[s.subscription_type]} <span className="text-xs">{TYPE_LABELS[s.subscription_type] ?? s.subscription_type}</span>
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-white font-semibold">{formatCurrency(s.price)}</td>
+                  <td className="px-4 py-3 text-gray-900 font-semibold">{formatCurrency(s.price)}</td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{formatDate(s.start_date)}</td>
                   <td className="px-4 py-3 text-xs">
                     <span className={expiringSoon ? 'text-yellow-400 font-medium' : 'text-gray-400'}>{formatDate(s.end_date)}</span>

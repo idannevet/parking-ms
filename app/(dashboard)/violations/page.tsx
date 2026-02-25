@@ -79,7 +79,7 @@ export default function ViolationsPage() {
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#1F2937]">
+            <tr className="border-b border-gray-200">
               {['רכב', 'בעלים', 'חניון', 'הפרה', 'קנס', 'הונפק', 'תאריך פירעון', 'סטטוס', 'פעולה'].map(h => (
                 <th key={h} className="px-4 py-3 text-right text-gray-500 text-xs font-medium uppercase tracking-wider">{h}</th>
               ))}
@@ -91,10 +91,10 @@ export default function ViolationsPage() {
             ) : violations.map(v => {
               const isOverdue = !v.paid && v.due_date && new Date(v.due_date) < new Date();
               return (
-                <tr key={v.id} className={`border-b border-[#1F2937] hover:bg-white/[0.02] ${isOverdue ? 'bg-red-500/5' : ''}`}>
+                <tr key={v.id} className={`border-b border-gray-200 hover:bg-gray-50 ${isOverdue ? 'bg-red-500/5' : ''}`}>
                   <td className="px-4 py-3 font-mono text-blue-400 text-sm font-semibold">{v.vehicle?.license_plate ?? '—'}</td>
-                  <td className="px-4 py-3 text-gray-300 text-xs">{v.vehicle?.owner_name ?? '—'}</td>
-                  <td className="px-4 py-3 text-gray-300 text-xs">{v.lot?.name ?? '—'}</td>
+                  <td className="px-4 py-3 text-gray-700 text-xs">{v.vehicle?.owner_name ?? '—'}</td>
+                  <td className="px-4 py-3 text-gray-700 text-xs">{v.lot?.name ?? '—'}</td>
                   <td className="px-4 py-3"><span className="text-gray-200 text-xs">{VIOLATION_LABELS[v.violation_type] ?? v.violation_type}</span></td>
                   <td className="px-4 py-3 text-red-400 font-bold">{formatCurrency(v.fine_amount)}</td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{formatDate(v.issued_at)}</td>

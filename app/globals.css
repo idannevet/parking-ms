@@ -8,39 +8,39 @@
 
 body {
   font-family: 'Rubik', system-ui, sans-serif;
-  background: #0C1220;
-  color: #F1F5F9;
+  background: #F8FAFC;
+  color: #111827;
   -webkit-font-smoothing: antialiased;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #111827; }
-::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #4B5563; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
 /* Custom utilities */
 .glass {
-  background: rgba(17, 24, 39, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(55, 65, 81, 0.6);
+  border: 1px solid rgba(203, 213, 225, 0.6);
 }
 
 .card {
-  background: #111827;
-  border: 1px solid #1F2937;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
   border-radius: 12px;
 }
 
 .card-hover {
-  background: #111827;
-  border: 1px solid #1F2937;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
   border-radius: 12px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .card-hover:hover {
-  border-color: #374151;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 
 .badge {
@@ -54,18 +54,18 @@ body {
 }
 
 .input-field {
-  background: #0C1220;
-  border: 1px solid #374151;
+  background: #FFFFFF;
+  border: 1px solid #D1D5DB;
   border-radius: 8px;
   padding: 8px 12px;
-  color: #F1F5F9;
+  color: #111827;
   font-size: 14px;
   width: 100%;
   outline: none;
   transition: border-color 0.2s;
 }
 .input-field:focus { border-color: #3B82F6; }
-.input-field::placeholder { color: #6B7280; }
+.input-field::placeholder { color: #9CA3AF; }
 
 .btn-primary {
   background: #3B82F6;
@@ -84,21 +84,22 @@ body {
 
 .btn-ghost {
   background: transparent;
-  color: #9CA3AF;
-  border: 1px solid #374151;
+  color: #374151;
+  border: 1px solid #D1D5DB;
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-.btn-ghost:hover { background: #1F2937; color: #F1F5F9; }
+.btn-ghost:hover { background: #F3F4F6; color: #111827; }
+.btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* Recharts overrides */
 .recharts-tooltip-wrapper { outline: none !important; }
 .recharts-default-tooltip {
-  background: #111827 !important;
-  border: 1px solid #374151 !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
   border-radius: 8px !important;
-  color: #F1F5F9 !important;
+  color: #111827 !important;
 }

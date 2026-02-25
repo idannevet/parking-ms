@@ -54,7 +54,7 @@ export default function SessionsPage() {
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#1F2937]">
+            <tr className="border-b border-gray-200">
               {['רכב', 'בעלים', 'חניון', 'כניסה', 'יציאה', 'משך', 'חיוב', 'סטטוס', 'סוג'].map(h => (
                 <th key={h} className="px-4 py-3 text-right text-gray-500 text-xs font-medium uppercase tracking-wider">{h}</th>
               ))}
@@ -64,16 +64,16 @@ export default function SessionsPage() {
             {loading ? (
               <tr><td colSpan={9} className="text-center py-16"><Spinner size={24} className="text-blue-400 mx-auto" /></td></tr>
             ) : sessions.map(s => (
-              <tr key={s.id} className="border-b border-[#1F2937] hover:bg-white/[0.02]">
+              <tr key={s.id} className="border-b border-gray-200 hover:bg-gray-50">
                 <td className="px-4 py-3 font-mono text-blue-400 text-sm font-semibold">{s.vehicle?.license_plate ?? '—'}</td>
-                <td className="px-4 py-3 text-gray-300 text-xs">{s.vehicle?.owner_name ?? '—'}</td>
-                <td className="px-4 py-3 text-gray-300 text-xs">{s.lot?.name ?? '—'}</td>
+                <td className="px-4 py-3 text-gray-700 text-xs">{s.vehicle?.owner_name ?? '—'}</td>
+                <td className="px-4 py-3 text-gray-700 text-xs">{s.lot?.name ?? '—'}</td>
                 <td className="px-4 py-3 text-gray-400 text-xs">{formatDate(s.entry_time, true)}</td>
                 <td className="px-4 py-3 text-gray-400 text-xs">
                   {s.exit_time ? formatDate(s.exit_time, true) : <span className="text-green-400 font-medium">פעיל ●</span>}
                 </td>
-                <td className="px-4 py-3 text-gray-300 text-xs">{formatDuration(s.duration_minutes)}</td>
-                <td className="px-4 py-3 text-white font-semibold text-sm">{formatCurrency(s.total_charge)}</td>
+                <td className="px-4 py-3 text-gray-700 text-xs">{formatDuration(s.duration_minutes)}</td>
+                <td className="px-4 py-3 text-gray-900 font-semibold text-sm">{formatCurrency(s.total_charge)}</td>
                 <td className="px-4 py-3"><Badge label={STATUS_LABELS[s.payment_status] ?? s.payment_status} preset={s.payment_status} /></td>
                 <td className="px-4 py-3 text-gray-500 text-xs">{TYPE_LABELS[s.session_type] ?? s.session_type}</td>
               </tr>

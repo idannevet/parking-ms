@@ -17,8 +17,8 @@ export default function ViolationsDonut({ data }: Props) {
         <Tooltip
           content={({ active, payload }) =>
             active && payload?.length ? (
-              <div className="bg-[#1F2937] border border-[#374151] rounded-lg px-3 py-2 text-xs">
-                <p className="text-white font-semibold">{fmt(payload[0].name as string)}</p>
+              <div className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs">
+                <p className="text-gray-900 font-semibold">{fmt(payload[0].name as string)}</p>
                 <p className="text-gray-400">{payload[0].value} violations</p>
                 <p className="text-red-400">₪{Number(payload[0].payload.total_fines).toLocaleString()} fines</p>
               </div>
@@ -27,7 +27,7 @@ export default function ViolationsDonut({ data }: Props) {
         />
         <Legend
           layout="vertical" align="right" verticalAlign="middle"
-          formatter={(value) => <span style={{color:'#9CA3AF',fontSize:10}}>{fmt(value)}</span>}
+          formatter={(value) => <span style={{color:'#6B7280',fontSize:10}}>{fmt(value)}</span>}
           iconSize={8} iconType="circle"
         />
       </PieChart>
