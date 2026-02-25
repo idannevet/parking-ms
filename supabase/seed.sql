@@ -17,7 +17,7 @@ INSERT INTO parking_lots (id, name, location, city, lot_type, total_spots, hourl
   ('11111111-1111-1111-1111-000000000009','Ramat Gan Diamond Exchange','50 Jabotinsky St','Ramat Gan','corporate',220,12.00,70.00,1100.00,'07:00','21:00',32.0822,34.8178),
   ('11111111-1111-1111-1111-000000000010','Eilat Mall Parking','North Beach Promenade','Eilat','mall',350,5.50,35.00,400.00,'08:00','23:00',29.5577,34.9519),
   ('11111111-1111-1111-1111-000000000011','Netanya City Square','1 Independence Square','Netanya','city',160,5.00,32.00,380.00,'06:00','22:00',32.3293,34.8588),
-  ('11111111-1111-1111-1111-000000000012','Teddy Stadium Jerusalem','Katamon','Jerusalem','stadium',400,10.00,40.00,NULL,'10:00','23:59',31.7478,35.2020),
+  ('11111111-1111-1111-1111-000000000012','Teddy Stadium Jerusalem','Katamon','Jerusalem','stadium',400,10.00,40.00,0.00,'10:00','23:59',31.7478,35.2020),
   ('11111111-1111-1111-1111-000000000013','Modi''in Tech Park','7 Alon Rd','Modi''in','corporate',280,11.00,65.00,950.00,'07:00','20:00',31.9079,35.0076),
   ('11111111-1111-1111-1111-000000000014','Herzliya Marina','Marina Blvd','Herzliya','residential',200,8.00,48.00,600.00,'00:00','23:59',32.1659,34.7985),
   ('11111111-1111-1111-1111-000000000015','Rishon Tech Campus','30 HaMasger St','Rishon LeZion','corporate',320,10.00,60.00,880.00,'06:30','21:00',31.9633,34.8042);
