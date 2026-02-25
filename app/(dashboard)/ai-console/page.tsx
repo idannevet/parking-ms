@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send, Code2, Table2, Lightbulb, Clock, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import Spinner from '@/components/ui/Spinner';
+import { translateValue } from '@/lib/utils';
 
 interface QueryResult {
   sql: string;
@@ -66,12 +67,18 @@ function ResultTable({ columns, data }: { columns: string[]; data: Record<string
             <tr key={i} className="border-b border-[#1F2937]/50 hover:bg-white/[0.02]">
               {columns.map(c => {
                 const val = row[c];
-                const str = val === null || val === undefined ? '—' : String(val);
                 const isNum = typeof val === 'number';
                 const isMoney = isNum && (c.includes('revenue') || c.includes('amount') || c.includes('price') || c.includes('charge') || c.includes('fine'));
+                // Translate short enum-like strings (no spaces, ≤30 chars)
+                const isEnum = typeof val === 'string' && val.length <= 30 && !/\s/.test(val);
+                const display = isMoney
+                  ? `₪${Number(val).toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                  : isEnum
+                    ? translateValue(val)
+                    : (val === null || val === undefined ? '—' : String(val));
                 return (
                   <td key={c} className={`px-3 py-2 text-xs whitespace-nowrap ${isNum ? 'text-left font-mono' : ''} ${isMoney ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
-                    {isMoney ? `₪${Number(val).toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : str}
+                    {display}
                   </td>
                 );
               })}

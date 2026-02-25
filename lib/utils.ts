@@ -50,6 +50,47 @@ export const SPOT_TYPE_COLORS: Record<string, string> = {
   vip: '#F59E0B', reserved: '#8B5CF6', motorcycle: '#F97316',
 };
 
+// ─── Universal enum-value → Hebrew labels ─────────────────────────────────
+const DB_VALUE_MAP: Record<string, string> = {
+  // lot_type
+  city: 'עיר', airport: 'שדה תעופה', mall: 'קניון',
+  residential: 'מגורים', corporate: 'עסקי', hospital: 'בית חולים', stadium: 'אצטדיון',
+  // spot_type
+  regular: 'רגיל', disabled: 'נכים', ev: 'חשמלי',
+  vip: 'VIP', reserved: 'שמור', motorcycle: 'אופנוע',
+  // sensor_status
+  active: 'פעיל', faulty: 'תקול', offline: 'לא מחובר',
+  // vehicle_type
+  car: 'מכונית', truck: 'משאית', van: 'ואן', suv: 'SUV',
+  // employee role
+  admin: 'מנהל', operator: 'מפעיל', security: 'אבטחה',
+  maintenance: 'תחזוקה', cashier: 'קופאי', manager: 'מנהל סניף',
+  // payment_status (sessions)
+  paid: 'שולם', unpaid: 'לא שולם', pending: 'ממתין',
+  subscription: 'מנוי', waived: 'מחול',
+  // session_type
+  guest: 'אורח',
+  // subscription_type
+  monthly: 'חודשי', yearly: 'שנתי', daily_pass: 'כרטיס יומי', student: 'סטודנט',
+  // payment_method
+  cash: 'מזומן', credit_card: 'כרטיס אשראי', debit_card: 'כרטיס חיוב',
+  mobile_pay: 'תשלום סלולרי', corporate_account: 'חשבון עסקי', online: 'אונליין',
+  // payment status
+  completed: 'הושלם', failed: 'נכשל', refunded: 'הוחזר',
+  // violation_type
+  overtime: 'חריגת זמן', no_permit: 'ללא היתר', disabled_zone: 'אזור נגישות',
+  fire_lane: 'נתיב חירום', wrong_spot: 'מקום שגוי', expired_meter: 'מונה פג תוקף',
+  double_parked: 'חנייה כפולה', unpaid_session: 'חנייה שלא שולמה',
+  // booleans
+  true: 'כן', false: 'לא',
+};
+
+export function translateValue(val: unknown): string {
+  if (val === null || val === undefined) return '—';
+  const str = String(val);
+  return DB_VALUE_MAP[str] ?? DB_VALUE_MAP[str.toLowerCase()] ?? str;
+}
+
 export const STATUS_COLORS: Record<string, string> = {
   paid: '#10B981', unpaid: '#EF4444', pending: '#F59E0B',
   subscription: '#8B5CF6', waived: '#6B7280',
